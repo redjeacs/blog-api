@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const passport = require("passport");
+const cors = require("cors");
 const sessionConfig = require("./configs/sessionConfig");
 require("./configs/cloudinaryConfig");
 
@@ -10,6 +11,7 @@ const usersRouter = require("./routes/usersRouter");
 const postsRouter = require("./routes/postsRouter");
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // Session
 
