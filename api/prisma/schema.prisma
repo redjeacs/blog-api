@@ -8,21 +8,26 @@ datasource db {
 }
 
 model User {
-  id       String    @id @default(uuid())
-  username String    @unique
-  password String
-  comments Comment[]
-  posts    Post[]
+  id          String    @id @default(uuid())
+  username    String    @unique
+  password    String
+  isAuthor    Boolean   @default(false)
+  comments    Comment[]
+  posts       Post[]
 
   @@map("user")
 }
 
 model Post {
-  id        String    @id @default(uuid())
-  createdAt DateTime  @default(now())
-  userId    String
-  comments  Comment[]
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id          String    @id @default(uuid())
+  createdAt   DateTime  @default(now())
+  userId      String
+  content     String
+  img         String
+  isPublished Boolean   @default(false)
+  title       String    @unique
+  comments    Comment[]
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("post")
 }
