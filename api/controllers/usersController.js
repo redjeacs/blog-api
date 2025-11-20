@@ -6,12 +6,12 @@ const passport = require("passport");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-exports.signupPost = [
+exports.createUser = [
   validators.signupValidator,
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).render("signup", { errors: errors.array() });
+      return res.status(400).json({ errors: errors.array() });
     }
     try {
       const data = matchedData(req);
@@ -31,7 +31,7 @@ exports.signupPost = [
   },
 ];
 
-exports.signinPost = [
+exports.signin = [
   validators.signinValidator,
   async (req, res, next) => {
     const errors = validationResult(req);
@@ -52,7 +52,9 @@ exports.signinPost = [
           expiresIn: "1d",
         });
 
-        return res.status(200).json({ token, user: payload });
+        return res
+          .status(200)
+          .json({ message: "You are logged in", token, user: payload });
       })(req, res, next);
     } catch (err) {
       return next(err);
@@ -60,7 +62,9 @@ exports.signinPost = [
   },
 ];
 
-exports.signoutGet = async (req, res, next) => {
+exports.signout = async (req, res, next) => {
+  if (!req.cookies.token)
+    throw new CustomNotFoundError("No active session found");
   req.logout(async (err) => {
     if (err) {
       return next(err);

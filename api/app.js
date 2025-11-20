@@ -27,8 +27,8 @@ require("./config/passportConfig");
 
 // Routes
 
-app.use("/", indexRouter);
-app.use("/binder", binderRouter);
+app.use("/users", usersRouter);
+app.use("/posts", postsRouter);
 
 // Error
 
