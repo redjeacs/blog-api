@@ -2,8 +2,9 @@ const express = require("express");
 const app = express();
 const passport = require("passport");
 const cors = require("cors");
-const sessionConfig = require("./configs/sessionConfig");
 require("./configs/cloudinaryConfig");
+
+require("./configs/passportConfig");
 
 const PORT = process.env.PORT || 8000;
 
@@ -12,23 +13,12 @@ const postsRouter = require("./routes/postsRouter");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-// Session
-
-app.use(sessionConfig());
-app.use(passport.session());
-
-app.use((req, res, next) => {
-  res.locals.currentUser = req.user;
-  next();
-});
-
-require("./config/passportConfig");
+app.use(passport.initialize());
 
 // Routes
 
-app.use("/users", usersRouter);
-app.use("/posts", postsRouter);
+app.use("/api/users", usersRouter);
+app.use("/api/posts", postsRouter);
 
 // Error
 

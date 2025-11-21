@@ -18,7 +18,8 @@ exports.createUser = [
       if (!data)
         throw new CustomNotFoundError("provided user information is invalid");
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
-      const user = await db.createUser(req.body.username, hashedPassword);
+      await db.createUser(req.body.username, hashedPassword);
+      const user = await db.getUser("username", req.body.username);
 
       const payload = { id: user.id, username: user.username };
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
