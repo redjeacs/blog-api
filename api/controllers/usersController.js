@@ -62,14 +62,3 @@ exports.signin = [
     }
   },
 ];
-
-exports.signout = async (req, res, next) => {
-  if (!req.cookies.token)
-    throw new CustomNotFoundError("No active session found");
-  req.logout(async (err) => {
-    if (err) {
-      return next(err);
-    }
-    res.redirect("/");
-  });
-};

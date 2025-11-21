@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const passport = require("passport");
-const cors = require("cors");
+const verifyToken = require("./middlewares/verifyToken");
 require("./configs/cloudinaryConfig");
 
 require("./configs/passportConfig");
