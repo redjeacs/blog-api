@@ -18,7 +18,8 @@ exports.createUser = [
       if (!data)
         throw new CustomNotFoundError("provided user information is invalid");
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
-      await db.createUser(req.body.username, hashedPassword);
+      console.log(req.body);
+      await db.createUser(req.body.username, hashedPassword, req.body.isAuthor);
       const user = await db.getUser("username", req.body.username);
 
       const payload = {

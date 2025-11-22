@@ -3,6 +3,7 @@ const db = require("../db/queries");
 
 const emptyMsg = "is required";
 const length = "should be between 1 and 50 characters";
+const boolean = "has to be a true or false value";
 
 exports.signupValidator = [
   body("username")
@@ -46,4 +47,18 @@ exports.signinValidator = [
     .withMessage("password " + emptyMsg)
     .isLength({ min: 1, max: 50 })
     .withMessage("username " + length),
+];
+
+exports.createPostValdiator = [
+  body("title")
+    .trim()
+    .notEmpty()
+    .withMessage("post title " + emptyMsg),
+  body("content")
+    .trim()
+    .notEmpty()
+    .withMessage("post content " + emptyMsg),
+  body("isPublished")
+    .isBoolean()
+    .withMessage("isPublished " + boolean),
 ];

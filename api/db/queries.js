@@ -1,11 +1,12 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-exports.createUser = async (username, password) => {
+exports.createUser = async (username, password, isAuthor = false) => {
   await prisma.user.create({
     data: {
       username: username,
       password: password,
+      isAuthor: isAuthor,
     },
   });
 };
@@ -29,4 +30,32 @@ exports.getAllPosts = async () => {
     },
   });
   return posts;
+};
+
+exports.getPost = async (colName, query) => {
+  const key = { [colName]: query };
+  const post = await prisma.post.findUnique({
+    where: key,
+    include: {
+      comments: true,
+    },
+  });
+};
+
+exports.createPost = async (
+  userId,
+  title,
+  content,
+  img,
+  isPublished = false
+) => {
+  await prisma.post.create({
+    data: {
+      id: userId,
+      title: title,
+      content: content,
+      img: img,
+      isPublished: isPublished,
+    },
+  });
 };
