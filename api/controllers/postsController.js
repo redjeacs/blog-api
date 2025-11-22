@@ -68,3 +68,24 @@ exports.createPost = [
     }
   },
 ];
+
+exports.deletePost = async (req, res, next) => {
+  const postId = req.params.postId;
+  try {
+    await db.deletePost(postId);
+    res.status(200).json({ message: "Post has been deleted" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.createComment = async (req, res, next) => {
+  const userId = req.user.id;
+  const postId = req.params.postId;
+  try {
+    await db.createComment(userId, postId, req.body.text);
+    res.status(200).json({ message: "comment created" });
+  } catch (err) {
+    next(err);
+  }
+};

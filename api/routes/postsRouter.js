@@ -18,8 +18,17 @@ postsRouter.post(
 
 postsRouter.get("/:postId", postsController.getPost);
 postsRouter.put("/:postId", verifyToken, isAuthor /*editPost*/);
-postsRouter.delete("/:postId", verifyToken, isAuthor /*deletePost*/);
+postsRouter.delete(
+  "/:postId",
+  verifyToken,
+  isAuthor,
+  postsController.deletePost
+);
 
-postsRouter.post("/comments", verifyToken /*createComment*/);
+postsRouter.post(
+  "/:postId/comments",
+  verifyToken,
+  postsController.createComment
+);
 
 module.exports = postsRouter;
