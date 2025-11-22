@@ -21,7 +21,11 @@ exports.createUser = [
       await db.createUser(req.body.username, hashedPassword);
       const user = await db.getUser("username", req.body.username);
 
-      const payload = { id: user.id, username: user.username };
+      const payload = {
+        id: user.id,
+        username: user.username,
+        isAuthor: user.isAuthor,
+      };
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
         expiresIn: "1d",
       });
@@ -48,7 +52,11 @@ exports.signin = [
             .status(401)
             .json({ message: info?.message || "Invalid credentials" });
 
-        const payload = { id: user.id, username: user.username };
+        const payload = {
+          id: user.id,
+          username: user.username,
+          isAuthor: user.isAuthor,
+        };
         const token = jwt.sign(payload, process.env.JWT_SECRET, {
           expiresIn: "1d",
         });
