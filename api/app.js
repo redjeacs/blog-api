@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const passport = require("passport");
-const verifyToken = require("./middlewares/verifyToken");
+const cors = require("cors");
 require("./configs/cloudinaryConfig");
 
 require("./configs/passportConfig");
@@ -13,6 +13,7 @@ const postsRouter = require("./routes/postsRouter");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors());
 app.use(passport.initialize());
 
 // Routes

@@ -71,3 +71,20 @@ exports.signin = [
     }
   },
 ];
+
+exports.checkSignin = async (req, res, next) => {
+  try {
+    const user = await db.getUser("id", req.user.id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const payload = {
+      id: user.id,
+      username: user.username,
+      isAuthor: user.isAuthor,
+    };
+
+    res.status(200).json({ message: "User is signed in", user: payload });
+  } catch (err) {
+    next(err);
+  }
+};
