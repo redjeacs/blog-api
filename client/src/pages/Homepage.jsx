@@ -1,5 +1,9 @@
+import { useAuth } from "../contexts/authProvider";
+
 function Homepage() {
-  return <div className="">Homepage</div>;
+  const { user, setUser } = useAuth();
+  console.log(user);
+  return <div className="">{user.id}</div>;
 }
 
 export default Homepage;

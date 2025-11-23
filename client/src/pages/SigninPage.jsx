@@ -1,8 +1,40 @@
-import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import { useAuth } from "../contexts/authProvider";
+import { Link, useNavigate } from "react-router-dom";
 
 function SigninPage() {
+  const navigate = useNavigate();
+  const { user, setUser } = useAuth();
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("http://localhost:8080/api/users/signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: formData.username,
+          password: formData.password,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setUser(data.user);
+        navigate("/");
+      } else {
+        alert(data.message || "Sign in failed");
+      }
+    } catch (err) {
+      alert("Network error");
+    }
+  };
+
   return (
-    <div className=" min-h-full justify-center px-6 py-12 lg:px-8 bg-slate-500">
+    <div className="min-h-fit justify-center items-center px-6 py-12 lg:px-8 bg-slate-500">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-white">
           Sign in to your account
@@ -10,7 +42,7 @@ function SigninPage() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form action="#" method="POST" className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label
               htmlFor="username"
@@ -25,6 +57,10 @@ function SigninPage() {
                 name="username"
                 required
                 autoComplete="username"
+                value={formData.username}
+                onChange={(e) =>
+                  setFormData({ ...formData, username: e.target.value })
+                }
                 className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
               />
             </div>
@@ -46,6 +82,10 @@ function SigninPage() {
                 name="password"
                 required
                 autoComplete="current-password"
+                value={formData.password}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
                 className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
               />
             </div>
