@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/authProvider";
 
 function Navbar() {
+  const { user, setUser } = useAuth();
   const [open, setOpen] = useState(false);
   return (
     <div className="w-full h-16 md:h-20 flex items-center justify-between">
@@ -43,11 +45,11 @@ function Navbar() {
         >
           <Link to="/">Home</Link>
           <Link to="/">Trending</Link>
-          <Link to="/">Most Popular</Link>
           <Link to="/">About</Link>
+          <Link to="/">Most Popular</Link>
           <Link to="/signin">
             <button className="py-2 px-4 rounded-3xl bg-blue-800 text-white">
-              Signin
+              Sign in
             </button>
           </Link>
         </div>
@@ -56,13 +58,24 @@ function Navbar() {
       <div className="hidden md:flex items-center gap-8 xl:gap-12 font-medium">
         <Link to="/">Home</Link>
         <Link to="/">Trending</Link>
-        <Link to="/">Most Popular</Link>
         <Link to="/">About</Link>
-        <Link to="/signin">
-          <button className="py-2 px-4 rounded-3xl bg-blue-800 text-white">
-            Signin
-          </button>
-        </Link>
+        {user ? (
+          <>
+            <div>Welcome, {user.username}!</div>
+            <button className="py-2 px-4 rounded-3xl bg-blue-800 text-white">
+              Signout
+            </button>
+          </>
+        ) : (
+          <>
+            <Link to="/signup">Sign up</Link>
+            <Link to="/signin">
+              <button className="py-2 px-4 rounded-3xl bg-blue-800 text-white">
+                Sign in
+              </button>
+            </Link>
+          </>
+        )}
       </div>
     </div>
   );
