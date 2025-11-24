@@ -44,19 +44,46 @@ function Navbar() {
         </div>
         {/* dropdown */}
         <div
-          className={`w-full h-screen flex flex-col items-center justify-center gap-8 font-medium text-lg absolute top-16 transition-all ease-in-out ${
-            open ? "-right-0" : "-right-[100%]"
+          className={`w-full h-screen flex flex-col items-center justify-center gap-8 font-medium text-lg absolute top-16 transition-all ease-in-out bg-[#e6e6ff] ${
+            open ? "-right-0" : "-right-[100%] "
           }`}
         >
-          <Link to="/">Home</Link>
-          <Link to="/">Trending</Link>
-          <Link to="/">About</Link>
-          <Link to="/">Most Popular</Link>
-          <Link to="/signin">
-            <button className="py-2 px-4 rounded-3xl bg-blue-800 text-white">
-              Sign in
-            </button>
+          <Link to="/" onClick={() => setOpen(false)}>
+            Home
           </Link>
+          <Link to="/" onClick={() => setOpen(false)}>
+            Trending
+          </Link>
+          <Link to="/" onClick={() => setOpen(false)}>
+            About
+          </Link>
+          {user ? (
+            <>
+              <div className="border-b border-black">
+                Welcome, {user.username}!
+              </div>
+              <button
+                onClick={() => {
+                  handleSignout();
+                  setOpen(false);
+                }}
+                className="py-2 px-4 rounded-3xl bg-blue-800 text-white"
+              >
+                Signout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/signup" onClick={() => setOpen(false)}>
+                Sign up
+              </Link>
+              <Link to="/signin" onClick={() => setOpen(false)}>
+                <button className="py-2 px-4 rounded-3xl bg-blue-800 text-white">
+                  Sign in
+                </button>
+              </Link>
+            </>
+          )}
         </div>
       </div>
       {/* DESKTOP MENU */}
@@ -66,9 +93,14 @@ function Navbar() {
         <Link to="/">About</Link>
         {user ? (
           <>
-            <div>Welcome, {user.username}!</div>
+            <div className="border-b border-black">
+              Welcome, {user.username}!
+            </div>
             <button
-              onClick={handleSignout}
+              onClick={() => {
+                handleSignout();
+                setOpen(false);
+              }}
               className="py-2 px-4 rounded-3xl bg-blue-800 text-white"
             >
               Signout
