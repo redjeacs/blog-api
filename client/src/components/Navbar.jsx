@@ -3,8 +3,13 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/authProvider";
 
 function Navbar() {
-  const { user, setUser } = useAuth();
+  const { user, setUser, token, setToken } = useAuth();
   const [open, setOpen] = useState(false);
+
+  function handleSignout() {
+    setUser(null);
+    setToken(null);
+  }
   return (
     <div className="w-full h-16 md:h-20 flex items-center justify-between">
       <Link to="/" className="flex items-center gap-4 text-2xl font-bold">
@@ -62,7 +67,10 @@ function Navbar() {
         {user ? (
           <>
             <div>Welcome, {user.username}!</div>
-            <button className="py-2 px-4 rounded-3xl bg-blue-800 text-white">
+            <button
+              onClick={handleSignout}
+              className="py-2 px-4 rounded-3xl bg-blue-800 text-white"
+            >
               Signout
             </button>
           </>

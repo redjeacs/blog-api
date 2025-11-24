@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 function SigninPage() {
   const navigate = useNavigate();
-  const { user, setUser } = useAuth();
+  const { user, setUser, token, setToken } = useAuth();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -24,6 +24,7 @@ function SigninPage() {
       const data = await res.json();
       if (res.ok) {
         setUser(data.user);
+        setToken(data.token); // <-- store the token
         navigate("/");
       } else {
         alert(data.message || "Sign in failed");

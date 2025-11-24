@@ -24,22 +24,30 @@ export const useAuth = () => {
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(
+    () => localStorage.getItem("token") || null
+  );
 
   useEffect(() => {
-    const fetch = async () => {
-      try {
-        const response = await api.get("/users/session");
-        setUser(response.data.user);
-      } catch {
-        setUser(null);
-      }
-    };
+    if (token) {
+      // Optionally fetch user session with token
+      api
+        .get("/users/session", {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => setUser(response.data.user))
+        .catch(() => setUser(null));
+    }
+  }, [token]);
 
-    fetch();
-  }, []);
+  // Persist token to localStorage
+  useEffect(() => {
+    if (token) localStorage.setItem("token", token);
+    else localStorage.removeItem("token");
+  }, [token]);
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, token, setToken }}>
       {children}
     </AuthContext.Provider>
   );
