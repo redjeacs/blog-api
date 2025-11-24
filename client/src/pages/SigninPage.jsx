@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../contexts/authProvider";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -24,7 +24,7 @@ function SigninPage() {
       const data = await res.json();
       if (res.ok) {
         setUser(data.user);
-        setToken(data.token); // <-- store the token
+        setToken(data.token);
         navigate("/");
       } else {
         alert(data.message || "Sign in failed");

@@ -1,6 +1,43 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/authProvider";
 
 function SignUpPage() {
+  const navigate = useNavigate();
+  const { user, setUser, token, setToken } = useAuth();
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("http://localhost:8080/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: formData.username,
+          password: formData.password,
+          confirmPassword: formData.confirmPassword,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setUser(data.user);
+        setToken(data.token);
+        navigate("/");
+      } else {
+        alert(
+          data.errors
+            ? data.errors.map((error) => error.msg).join("\n")
+            : "Sign in failed"
+        );
+      }
+    } catch (err) {
+      alert("Network error");
+    }
+  };
   return (
     <div className=" h-fit justify-center px-6 py-12 lg:px-8 bg-slate-500">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -10,7 +47,7 @@ function SignUpPage() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form action="#" method="POST" className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label
               htmlFor="username"
@@ -23,6 +60,10 @@ function SignUpPage() {
                 id="username"
                 type="text"
                 name="username"
+                value={formData.username}
+                onChange={(e) =>
+                  setFormData({ ...formData, username: e.target.value })
+                }
                 required
                 autoComplete="username"
                 className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
@@ -44,6 +85,35 @@ function SignUpPage() {
                 id="password"
                 type="password"
                 name="password"
+                value={formData.password}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
+                required
+                autoComplete="current-password"
+                className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
+              />
+            </div>
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between">
+              <label
+                htmlFor="confirmPassword"
+                className="block text-sm/6 font-medium text-gray-100"
+              >
+                Confirm Password
+              </label>
+            </div>
+            <div className="mt-2">
+              <input
+                id="confirmPassword"
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={(e) =>
+                  setFormData({ ...formData, confirmPassword: e.target.value })
+                }
                 required
                 autoComplete="current-password"
                 className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
