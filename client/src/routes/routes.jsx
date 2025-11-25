@@ -20,7 +20,7 @@ const routes = [
         element: <PostListPage />,
       },
       {
-        path: "/post/:postId",
+        path: "/posts/:postId",
         element: <PostPage />,
       },
       {
