@@ -18,7 +18,6 @@ exports.createUser = [
       if (!data)
         throw new CustomNotFoundError("provided user information is invalid");
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
-      console.log(req.body);
       await db.createUser(req.body.username, hashedPassword, req.body.isAuthor);
       const user = await db.getUser("username", req.body.username);
 
@@ -64,7 +63,7 @@ exports.signin = [
 
         return res
           .status(200)
-          .json({ message: "You are logged in", token, user: payload });
+          .json({ message: "You are logged in", token: token, user: payload });
       })(req, res, next);
     } catch (err) {
       return next(err);

@@ -58,7 +58,4 @@ exports.createPostValdiator = [
     .trim()
     .notEmpty()
     .withMessage("post content " + emptyMsg),
-  body("isPublished")
-    .isBoolean()
-    .withMessage("isPublished " + boolean),
 ];

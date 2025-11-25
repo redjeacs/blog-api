@@ -57,5 +57,8 @@ exports.createPost = async (
       img: img,
       isPublished: isPublished,
     },
+    include: {
+      comments: true,
+    },
   });
 };
