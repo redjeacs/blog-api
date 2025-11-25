@@ -24,12 +24,17 @@ exports.getAllPosts = async (req, res, next) => {
 
 exports.getPost = async (req, res, next) => {
   const postId = req.params.postId;
-  console.log(postId);
   try {
     const post = await db.getPost("id", postId);
     if (!post) throw new CustomNotFoundError("Post does not exist");
 
     post.formattedCreatedAt = formatDate(post.createdAt);
+
+    if (post.comments) {
+      post.comments.forEach((comment) => {
+        comment.formattedCreatedAt = formatDate(comment.createdAt);
+      });
+    }
 
     res.status(200).json(post);
   } catch (err) {

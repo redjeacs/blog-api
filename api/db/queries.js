@@ -50,7 +50,6 @@ exports.createPost = async (
   img,
   isPublished = false
 ) => {
-  console.log(isPublished);
   await prisma.post.create({
     data: {
       title: title,
@@ -59,6 +58,20 @@ exports.createPost = async (
       isPublished: isPublished,
       user: {
         connect: { id: userId },
+      },
+    },
+  });
+};
+
+exports.createComment = async (userId, postId, text) => {
+  await prisma.comment.create({
+    data: {
+      text: text,
+      user: {
+        connect: { id: userId },
+      },
+      post: {
+        connect: { id: postId },
       },
     },
   });
