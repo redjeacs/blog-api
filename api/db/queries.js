@@ -28,6 +28,9 @@ exports.getAllPosts = async () => {
     orderBy: {
       createdAt: "desc",
     },
+    include: {
+      comments: true,
+    },
   });
   return posts;
 };
@@ -49,16 +52,16 @@ exports.createPost = async (
   img,
   isPublished = false
 ) => {
+  console.log(isPublished);
   await prisma.post.create({
     data: {
-      id: userId,
       title: title,
       content: content,
       img: img,
       isPublished: isPublished,
-    },
-    include: {
-      comments: true,
+      user: {
+        connect: { id: userId },
+      },
     },
   });
 };

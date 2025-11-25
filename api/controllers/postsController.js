@@ -58,7 +58,7 @@ exports.createPost = [
             req.body.title,
             req.body.content,
             result.secure_url,
-            req.body.isPublished
+            req.body.isPublished === "true"
           );
           res.status(200).json({ message: "Post created" });
         })
