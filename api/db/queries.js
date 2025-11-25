@@ -28,9 +28,6 @@ exports.getAllPosts = async () => {
     orderBy: {
       createdAt: "desc",
     },
-    include: {
-      comments: true,
-    },
   });
   return posts;
 };
@@ -43,6 +40,7 @@ exports.getPost = async (colName, query) => {
       comments: true,
     },
   });
+  return post;
 };
 
 exports.createPost = async (

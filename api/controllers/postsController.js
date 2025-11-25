@@ -24,6 +24,7 @@ exports.getAllPosts = async (req, res, next) => {
 
 exports.getPost = async (req, res, next) => {
   const postId = req.params.postId;
+  console.log(postId);
   try {
     const post = await db.getPost("id", postId);
     if (!post) throw new CustomNotFoundError("Post does not exist");
