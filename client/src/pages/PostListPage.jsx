@@ -41,7 +41,7 @@ function PostListPage() {
             }}
           />
           <PostCard
-            key={"test"}
+            key={"test1"}
             post={{
               id: "test",
               title: "test",
@@ -50,7 +50,7 @@ function PostListPage() {
             }}
           />
           <PostCard
-            key={"test"}
+            key={"test2"}
             post={{
               id: "test",
               title: "test",
@@ -59,7 +59,7 @@ function PostListPage() {
             }}
           />
           <PostCard
-            key={"test"}
+            key={"test3"}
             post={{
               id: "test",
               title: "test",
@@ -68,7 +68,7 @@ function PostListPage() {
             }}
           />
           <PostCard
-            key={"test"}
+            key={"test4"}
             post={{
               id: "test",
               title: "test",
@@ -77,7 +77,7 @@ function PostListPage() {
             }}
           />
           <PostCard
-            key={"test"}
+            key={"test5"}
             post={{
               id: "test",
               title: "test",

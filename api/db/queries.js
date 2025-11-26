@@ -38,6 +38,7 @@ exports.getPost = async (colName, query) => {
     where: key,
     include: {
       comments: true,
+      user: true,
     },
   });
   return post;

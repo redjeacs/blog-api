@@ -3,7 +3,7 @@ import PostListPage from "./PostListPage";
 import { Link } from "react-router-dom";
 
 function Homepage() {
-  const { user, setUser, token, setToken } = useAuth();
+  const { user } = useAuth();
   return (
     <div className="">
       {user ? (
