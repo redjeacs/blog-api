@@ -25,11 +25,10 @@ function PostPage() {
     fetchPost();
   }, [postId]);
 
-  console.log(post);
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex-col gap-8">
       {post ? (
-        <div className="flex gap-8">
+        <div className="flex flex-col gap-8">
           <div className="lg:w-3/5 flex flex-col gap-8">
             <h1 className="text-xl md:text-3xl xl:text-4xl 2xl:text-5xl font-semibold">
               {post.title}
@@ -43,10 +42,23 @@ function PostPage() {
             </div>
           </div>
           {post.img && (
-            <div className="hidden lg:block w-2/5">
-              <img src={post.img} alt="" w="600" className="rounded-2xl" />
+            <div className="hidden lg:block w-full">
+              <img src={post.img} alt="" className="rounded-2xl object-cover" />
             </div>
           )}
+          <div className="lg:text-lg flex flex-col gap-6 text-justify">
+            {post.content}
+          </div>
+          <div className="border-t border-black"></div>
+          <div>
+            {post.comments &&
+              post.comments.map((comment) => (
+                <div key={comment.id} className="mb-4">
+                  <p className="font-semibold">{comment.user.username}:</p>
+                  <p>{comment.text}</p>
+                </div>
+              ))}
+          </div>
         </div>
       ) : (
         <Loader />

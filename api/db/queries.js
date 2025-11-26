@@ -37,7 +37,11 @@ exports.getPost = async (colName, query) => {
   const post = await prisma.post.findUnique({
     where: key,
     include: {
-      comments: true,
+      comments: {
+        include: {
+          user: true,
+        },
+      },
       user: true,
     },
   });
