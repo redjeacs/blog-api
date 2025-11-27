@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Loader from "../components/Loader";
+import Comments from "../components/Comments";
 
 function PostPage() {
   const [post, setPost] = useState(null);
@@ -18,7 +19,7 @@ function PostPage() {
         } else {
           console.error("Failed to fetch post");
         }
-      } catch (error) {
+      } catch (err) {
         console.error("Error fetching post:", error);
       }
     };
@@ -26,7 +27,7 @@ function PostPage() {
   }, [postId]);
 
   return (
-    <div className="flex-col gap-8">
+    <div className="flex-col gap-8 w-4/5 mx-auto my-8">
       {post ? (
         <div className="flex flex-col gap-8">
           <div className="lg:w-3/5 flex flex-col gap-8">
@@ -43,22 +44,18 @@ function PostPage() {
           </div>
           {post.img && (
             <div className="hidden lg:block w-full">
-              <img src={post.img} alt="" className="rounded-2xl object-cover" />
+              <img
+                src={post.img}
+                alt=""
+                className="rounded-2xl object-cover w-full h-full"
+              />
             </div>
           )}
           <div className="lg:text-lg flex flex-col gap-6 text-justify">
             {post.content}
           </div>
           <div className="border-t border-black"></div>
-          <div>
-            {post.comments &&
-              post.comments.map((comment) => (
-                <div key={comment.id} className="mb-4">
-                  <p className="font-semibold">{comment.user.username}:</p>
-                  <p>{comment.text}</p>
-                </div>
-              ))}
-          </div>
+          <Comments post={post} />
         </div>
       ) : (
         <Loader />
