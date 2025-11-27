@@ -89,6 +89,10 @@ exports.getComments = async (req, res, next) => {
   const postId = req.params.postId;
   try {
     const comments = await db.getComments(postId);
+
+    comments.forEach((comment) => {
+      comment.formattedCreatedAt = formatDate(comment.createdAt);
+    });
     res.status(200).json(comments);
   } catch (err) {
     next(err);
@@ -100,6 +104,9 @@ exports.createComment = async (req, res, next) => {
   const postId = req.params.postId;
   try {
     const newComment = await db.createComment(userId, postId, req.body.text);
+
+    newComment.formattedCreatedAt = formatDate(newComment.createdAt);
+
     res.status(200).json({ message: "comment created", comment: newComment });
   } catch (err) {
     next(err);

@@ -1,8 +1,11 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/authProvider";
+import Errors from "./Errors";
+import Loader from "./Loader";
 
 function Comments({ post }) {
+  const [errors, setErrors] = useState("");
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
   const { postId } = useParams();
@@ -21,7 +24,7 @@ function Comments({ post }) {
           console.error("Failed to fetch comments");
         }
       } catch (err) {
-        console.error("Error fetching comments: ", err);
+        setErrors(err.message || "Error fetching comments");
       }
     };
     fetchComments();
@@ -51,10 +54,10 @@ function Comments({ post }) {
       if (res.ok) {
         setComments([...comments, data.comment]);
       } else {
-        console.error("Failed to post comment");
+        setErrors("Failed to post comment");
       }
     } catch (err) {
-      console.error("Error posting comment: ", err);
+      setErrors(err.message || "Error posting comment");
     }
   }
   return (
@@ -82,21 +85,30 @@ function Comments({ post }) {
         </button>
       </form>
       <h1 className="lg:text-2xl font-bold mb-4">Comments</h1>
-      {comments &&
-        comments.map((comment) => (
-          <div
-            key={comment.id}
-            className="mb-4 border border-gray-400 p-4 rounded-md bg-transparent"
-          >
-            <div className="font-semibold flex gap-2">
-              <p>{comment.user.username}</p>-
-              <p className="text-gray-500 text-sm">
-                {comment.formattedCreatedAt}
-              </p>
+      {errors ? (
+        <Errors errors={errors} />
+      ) : comments ? (
+        comments.length === 0 ? (
+          <p className="text-center">No comments yet.</p>
+        ) : (
+          comments.map((comment) => (
+            <div
+              key={comment.id}
+              className="mb-4 border border-gray-400 p-4 rounded-md bg-transparent"
+            >
+              <div className="font-semibold flex gap-2">
+                <p>{comment.user.username}</p>-
+                <p className="text-gray-500 text-sm">
+                  {comment.formattedCreatedAt}
+                </p>
+              </div>
+              <p>{comment.text}</p>
             </div>
-            <p>{comment.text}</p>
-          </div>
-        ))}
+          ))
+        )
+      ) : (
+        <Loader />
+      )}
     </div>
   );
 }
