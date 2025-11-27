@@ -25,6 +25,7 @@ postsRouter.delete(
   postsController.deletePost
 );
 
+postsRouter.get("/:postId/comments", postsController.getComments);
 postsRouter.post(
   "/:postId/comments",
   verifyToken,

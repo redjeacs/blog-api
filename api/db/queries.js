@@ -68,8 +68,20 @@ exports.createPost = async (
   });
 };
 
+exports.getComments = async (postId) => {
+  const key = { postId: postId };
+  const comments = await prisma.comment.findMany({
+    where: key,
+    include: {
+      user: true,
+    },
+  });
+
+  return comments;
+};
+
 exports.createComment = async (userId, postId, text) => {
-  await prisma.comment.create({
+  const newComment = await prisma.comment.create({
     data: {
       text: text,
       user: {
@@ -79,5 +91,7 @@ exports.createComment = async (userId, postId, text) => {
         connect: { id: postId },
       },
     },
+    include: { user: true, post: true },
   });
+  return newComment;
 };
