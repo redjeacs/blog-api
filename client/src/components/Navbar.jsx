@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/authProvider";
 
@@ -52,13 +52,15 @@ function Navbar() {
             Home
           </Link>
           <Link to="/" onClick={() => setOpen(false)}>
-            Trending
-          </Link>
-          <Link to="/" onClick={() => setOpen(false)}>
             About
           </Link>
           {user ? (
             <>
+              {user.isAuthor && (
+                <Link to="/write" onClick={() => setOpen(false)}>
+                  Create Post
+                </Link>
+              )}
               <div className="border-b border-black">
                 Welcome, {user.username}!
               </div>
@@ -89,10 +91,14 @@ function Navbar() {
       {/* DESKTOP MENU */}
       <div className="hidden md:flex items-center gap-8 xl:gap-12 font-medium">
         <Link to="/">Home</Link>
-        <Link to="/">Trending</Link>
         <Link to="/">About</Link>
         {user ? (
           <>
+            {user.isAuthor && (
+              <Link to="/write" onClick={() => setOpen(false)}>
+                Create Post
+              </Link>
+            )}
             <div className="border-b border-black">
               Welcome, {user.username}!
             </div>
