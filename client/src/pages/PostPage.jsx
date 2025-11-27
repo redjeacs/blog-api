@@ -2,14 +2,17 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Loader from "../components/Loader";
 import Comments from "../components/Comments";
+import Errors from "../components/Errors";
 
 function PostPage() {
   const [post, setPost] = useState(null);
+  const [errors, setErrors] = useState("");
   const { postId } = useParams();
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
+        setErrors("");
         const response = await fetch(
           `http://localhost:8080/api/posts/${postId}`
         );
@@ -17,10 +20,10 @@ function PostPage() {
         if (response.ok) {
           setPost(data);
         } else {
-          console.error("Failed to fetch post");
+          setErrors("Failed to fetch post.");
         }
       } catch (err) {
-        console.error("Error fetching post:", error);
+        setErrors("Error fetching post.");
       }
     };
     fetchPost();
@@ -28,7 +31,9 @@ function PostPage() {
 
   return (
     <div className="flex-col gap-8 w-4/5 mx-auto my-8">
-      {post ? (
+      {errors ? (
+        <Errors errors={errors} />
+      ) : post ? (
         <div className="flex flex-col gap-8">
           <div className="lg:w-3/5 flex flex-col gap-8">
             <h1 className="text-xl md:text-3xl xl:text-4xl 2xl:text-5xl font-semibold">
