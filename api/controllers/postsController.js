@@ -64,9 +64,43 @@ exports.createPost = [
             req.body.title,
             req.body.content,
             result.secure_url,
-            req.body.isPublished === "true"
+            req.body.isPublished === "false"
           );
           res.status(200).json({ message: "Post created" });
+        })
+        .end(req.file.buffer);
+    } catch (err) {
+      next(err);
+    }
+  },
+];
+
+exports.exitPost = [
+  validators.createPostValdiator,
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      return res.status(400).json({ errors: errors.array() });
+
+    const userId = req.user.id;
+    const postId = req.params.postId;
+
+    if (!req.file) {
+      return next(new CustomNotFoundError("No post image"));
+    }
+
+    try {
+      cloudinary.uploader
+        .upload_stream({ resource_type: "image" }, async (error, result) => {
+          if (error) return next(error);
+          await db.editPost(
+            postId,
+            req.body.title,
+            req.body.content,
+            result.secure_url,
+            req.body.isPublished === "false"
+          );
+          res.status(200).json({ message: "Post edited" });
         })
         .end(req.file.buffer);
     } catch (err) {

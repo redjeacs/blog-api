@@ -68,6 +68,24 @@ exports.createPost = async (
   });
 };
 
+exports.editPost = async (postId, title, content, img, isPublished = false) => {
+  await prisma.post.update({
+    where: { id: postId },
+    data: {
+      title: title,
+      content: content,
+      img: img,
+      isPublished: isPublished,
+    },
+  });
+};
+
+exports.deletePost = async (postId) => {
+  await prisma.post.delete({
+    where: { id: postId },
+  });
+};
+
 exports.getComments = async (postId) => {
   const key = { postId: postId };
   const comments = await prisma.comment.findMany({

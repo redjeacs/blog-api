@@ -17,7 +17,13 @@ postsRouter.post(
 );
 
 postsRouter.get("/:postId", postsController.getPost);
-postsRouter.put("/:postId", verifyToken, isAuthor /*editPost*/);
+postsRouter.put(
+  "/:postId",
+  verifyToken,
+  isAuthor,
+  upload.single("img"),
+  postsController.editPost
+);
 postsRouter.delete(
   "/:postId",
   verifyToken,
