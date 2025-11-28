@@ -57,8 +57,8 @@ function Navbar() {
           {user ? (
             <>
               {user.isAuthor && (
-                <Link to="/write" onClick={() => setOpen(false)}>
-                  Create Post
+                <Link to="/admin" onClick={() => setOpen(false)}>
+                  Admin
                 </Link>
               )}
               <div className="border-b border-black">
@@ -95,8 +95,8 @@ function Navbar() {
         {user ? (
           <>
             {user.isAuthor && (
-              <Link to="/write" onClick={() => setOpen(false)}>
-                Create Post
+              <Link to="/admin" onClick={() => setOpen(false)}>
+                Admin
               </Link>
             )}
             <div className="border-b border-black">

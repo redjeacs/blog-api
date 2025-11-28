@@ -13,7 +13,7 @@ const api = axios.create({
 
 const AuthContext = createContext(undefined);
 
-export const useAuth = () => {
+const useAuth = () => {
   const authContext = useContext(AuthContext);
 
   if (!authContext)
@@ -53,4 +53,4 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-export { AuthContext, AuthProvider };
+export { AuthContext, AuthProvider, useAuth };
