@@ -8,10 +8,25 @@ function PostCard({ post, isAuthor = false }) {
     window.location.href = `/posts/${post.id}`;
   };
 
-  const togglePublish = () => {
-    const newStatus = !post.isPublished;
+  const togglePublish = async () => {
+    const postId = post.id;
     try {
-      // API call to update publish status
+      const res = await fetch(
+        `http://localhost:8080/api/posts/${postId}/publish`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (res.ok) {
+        console.log("Publish status toggled");
+        window.location.reload();
+      } else {
+        console.error("Failed to toggle publish status");
+      }
     } catch (error) {
       console.error("Error updating publish status:", error);
     }
@@ -60,7 +75,10 @@ function PostCard({ post, isAuthor = false }) {
               >
                 Edit
               </button>
-              <button className="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center">
+              <button
+                onClick={togglePublish}
+                className="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center"
+              >
                 {post.isPublished ? "Unpublish" : "Publish"}
               </button>
               <button
