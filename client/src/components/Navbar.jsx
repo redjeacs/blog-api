@@ -44,7 +44,7 @@ function Navbar() {
         </div>
         {/* dropdown */}
         <div
-          className={`w-full h-screen flex flex-col items-center justify-center gap-8 font-medium text-lg absolute top-16 transition-all ease-in-out bg-[#e6e6ff] ${
+          className={`w-full h-screen flex flex-col items-center justify-center gap-8 font-medium text-lg absolute top-16 transition-all ease-in-out bg-[#e6e6ff] z-50 ${
             open ? "-right-0" : "-right-[100%] "
           }`}
         >
