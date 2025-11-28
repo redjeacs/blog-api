@@ -1,6 +1,42 @@
 import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/authProvider";
 
-function PostCard({ post }) {
+function PostCard({ post, isAuthor = false }) {
+  const { token } = useAuth();
+
+  const editPost = () => {
+    window.location.href = `/posts/${post.id}`;
+  };
+
+  const togglePublish = () => {
+    const newStatus = !post.isPublished;
+    try {
+      // API call to update publish status
+    } catch (error) {
+      console.error("Error updating publish status:", error);
+    }
+  };
+
+  const deletePost = async () => {
+    try {
+      const res = await fetch(`http://localhost:8080/api/posts/${post.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (res.ok) {
+        console.log("Post deleted");
+        window.location.reload();
+      } else {
+        console.error("Failed to delete post");
+      }
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
+  };
+
   return (
     <div className="max-w-lg mx-auto">
       <div className="bg-white shadow-md border border-gray-200 rounded-lg max-w-sm mb-5">
@@ -16,12 +52,32 @@ function PostCard({ post }) {
           <p className="font-normal text-gray-700 mb-3">
             {post.content.slice(0, 100)}...
           </p>
-          <Link
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center"
-            to={`/posts/${post.id}`}
-          >
-            Read more
-          </Link>
+          {isAuthor ? (
+            <div className="flex gap-2">
+              <button
+                onClick={editPost}
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center"
+              >
+                Edit
+              </button>
+              <button className="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center">
+                {post.isPublished ? "Unpublish" : "Publish"}
+              </button>
+              <button
+                onClick={deletePost}
+                className="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center"
+              >
+                Delete
+              </button>
+            </div>
+          ) : (
+            <Link
+              to={`/posts/${post.id}`}
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center"
+            >
+              Read More
+            </Link>
+          )}
         </div>
       </div>
     </div>

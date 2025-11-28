@@ -5,7 +5,7 @@ import PostCard from "../components/PostCard";
 function PostListPage() {
   const [posts, setPosts] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  console.log(posts);
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -32,60 +32,6 @@ function PostListPage() {
           {posts.map((post) => (
             <PostCard key={post.id} post={post} />
           ))}
-          <PostCard
-            key={"test"}
-            post={{
-              id: "test",
-              title: "test",
-              content: "test content",
-              img: "https://res.cloudinary.com/dcqhyzxa7/image/upload/v1764053521/myeit7yoop9ddzzum0ea.jpg",
-            }}
-          />
-          <PostCard
-            key={"test1"}
-            post={{
-              id: "test",
-              title: "test",
-              content: "test content",
-              img: "https://res.cloudinary.com/dcqhyzxa7/image/upload/v1764053521/myeit7yoop9ddzzum0ea.jpg",
-            }}
-          />
-          <PostCard
-            key={"test2"}
-            post={{
-              id: "test",
-              title: "test",
-              content: "test content",
-              img: "https://res.cloudinary.com/dcqhyzxa7/image/upload/v1764053521/myeit7yoop9ddzzum0ea.jpg",
-            }}
-          />
-          <PostCard
-            key={"test3"}
-            post={{
-              id: "test",
-              title: "test",
-              content: "test content",
-              img: "https://res.cloudinary.com/dcqhyzxa7/image/upload/v1764053521/myeit7yoop9ddzzum0ea.jpg",
-            }}
-          />
-          <PostCard
-            key={"test4"}
-            post={{
-              id: "test",
-              title: "test",
-              content: "test content",
-              img: "https://res.cloudinary.com/dcqhyzxa7/image/upload/v1764053521/myeit7yoop9ddzzum0ea.jpg",
-            }}
-          />
-          <PostCard
-            key={"test5"}
-            post={{
-              id: "test",
-              title: "test",
-              content: "test content",
-              img: "https://res.cloudinary.com/dcqhyzxa7/image/upload/v1764053521/myeit7yoop9ddzzum0ea.jpg",
-            }}
-          />
         </div>
       )}
     </div>

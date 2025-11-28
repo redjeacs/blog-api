@@ -80,6 +80,15 @@ exports.editPost = async (postId, title, content, img, isPublished = false) => {
   });
 };
 
+exports.togglePublishPost = async (postId, isPublished) => {
+  await prisma.post.update({
+    where: { id: postId },
+    data: {
+      isPublished: isPublished,
+    },
+  });
+};
+
 exports.deletePost = async (postId) => {
   await prisma.post.delete({
     where: { id: postId },

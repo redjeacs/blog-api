@@ -109,6 +109,20 @@ exports.editPost = [
   },
 ];
 
+exports.togglePublishPost = async (req, res, next) => {
+  const postId = req.params.postId;
+  try {
+    const post = await db.getPost("id", postId);
+    if (!post) throw new CustomNotFoundError("Post does not exist");
+
+    const newStatus = !post.isPublished;
+    await db.togglePublishPost(postId, newStatus);
+    res.status(200).json({ message: "Post publish status toggled" });
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.deletePost = async (req, res, next) => {
   const postId = req.params.postId;
   try {

@@ -24,6 +24,12 @@ postsRouter.put(
   upload.single("img"),
   postsController.editPost
 );
+postsRouter.put(
+  "/:postId/publish",
+  verifyToken,
+  isAuthor,
+  postsController.togglePublishPost
+);
 postsRouter.delete(
   "/:postId",
   verifyToken,
