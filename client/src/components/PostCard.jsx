@@ -4,10 +4,6 @@ import { useAuth } from "../contexts/authProvider";
 function PostCard({ post, isAuthor = false }) {
   const { token } = useAuth();
 
-  const editPost = () => {
-    window.location.href = `/posts/${post.id}`;
-  };
-
   const togglePublish = async () => {
     const postId = post.id;
     try {
@@ -69,12 +65,12 @@ function PostCard({ post, isAuthor = false }) {
           </p>
           {isAuthor ? (
             <div className="flex gap-2">
-              <button
-                onClick={editPost}
+              <Link
+                to={`/admin/${post.id}`}
                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center"
               >
                 Edit
-              </button>
+              </Link>
               <button
                 onClick={togglePublish}
                 className="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center"

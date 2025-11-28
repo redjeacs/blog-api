@@ -85,24 +85,39 @@ exports.editPost = [
     const userId = req.user.id;
     const postId = req.params.postId;
 
-    if (!req.file) {
-      return next(new CustomNotFoundError("No post image"));
-    }
-
     try {
-      cloudinary.uploader
-        .upload_stream({ resource_type: "image" }, async (error, result) => {
-          if (error) return next(error);
-          await db.editPost(
-            postId,
-            req.body.title,
-            req.body.content,
-            result.secure_url,
-            req.body.isPublished === "false"
-          );
-          res.status(200).json({ message: "Post edited" });
-        })
-        .end(req.file.buffer);
+      let imageUrl;
+
+      if (req.file) {
+        // Upload new image
+        cloudinary.uploader
+          .upload_stream({ resource_type: "image" }, async (error, result) => {
+            if (error) return next(error);
+            imageUrl = result.secure_url;
+            await db.editPost(
+              postId,
+              req.body.title,
+              req.body.content,
+              imageUrl,
+              req.body.isPublished === "true"
+            );
+            res.status(200).json({ message: "Post edited" });
+          })
+          .end(req.file.buffer);
+      } else {
+        // No new image, keep existing
+        const post = await db.getPost("id", postId);
+        if (!post) return next(new CustomNotFoundError("Post not found"));
+        imageUrl = post.img;
+        await db.editPost(
+          postId,
+          req.body.title,
+          req.body.content,
+          imageUrl,
+          req.body.isPublished === "true"
+        );
+        res.status(200).json({ message: "Post edited" });
+      }
     } catch (err) {
       next(err);
     }

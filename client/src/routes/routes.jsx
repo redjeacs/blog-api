@@ -6,6 +6,7 @@ import PostPage from "../pages/PostPage";
 import SignUpPage from "../pages/SignUpPage";
 import App from "../App";
 import WritePage from "../pages/WritePage";
+import EditPage from "../pages/EditPage";
 
 const routes = [
   {
@@ -34,6 +35,10 @@ const routes = [
           {
             path: "/admin/write",
             element: <WritePage />,
+          },
+          {
+            path: "/admin/:postId",
+            element: <EditPage />,
           },
         ],
       },
