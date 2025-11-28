@@ -64,7 +64,7 @@ exports.createPost = [
             req.body.title,
             req.body.content,
             result.secure_url,
-            req.body.isPublished === "false"
+            req.body.isPublished === "true"
           );
           res.status(200).json({ message: "Post created" });
         })
@@ -75,7 +75,7 @@ exports.createPost = [
   },
 ];
 
-exports.exitPost = [
+exports.editPost = [
   validators.createPostValdiator,
   async (req, res, next) => {
     const errors = validationResult(req);
